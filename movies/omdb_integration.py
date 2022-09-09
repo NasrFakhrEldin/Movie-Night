@@ -1,9 +1,10 @@
 import logging
 import re
-from django.utils.timezone import now
-from datetime import timedelta
 
-from movies.models import Genre, Movie, SearchTerm
+from datetime import timedelta
+from django.utils.timezone import now
+
+from movies.models import Genre, SearchTerm, Movie
 from omdb.django_client import get_client_from_settings
 
 logger = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ def search_and_save(search):
         # Don't search as it has been searched recently
         logger.warning(
             "Search for '%s' was performed in the past 24 hours so not searching again.",
-            normalized_search_term
+            normalized_search_term,
         )
         return
 

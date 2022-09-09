@@ -7,7 +7,7 @@ class SearchTerm(models.Model):
         ordering = ["id"]
     
     term = models.TextField(unique=True)
-    last_search = models.DateField(auto_now=True)
+    last_search = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.term

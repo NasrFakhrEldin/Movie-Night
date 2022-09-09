@@ -25,11 +25,11 @@ class OmdbMovie:
     
     @property
     def title(self):
-        return self.data["title"]
+        return self.data["Title"]
 
     @property
     def year(self):
-        return int(self.data["year"])
+        return int(self.data["Year"])
 
     @property
     def runtime_minutes(self):
@@ -46,7 +46,7 @@ class OmdbMovie:
         return int(rt)
     
     @property
-    def genre(self):
+    def genres(self):
         self.check_for_detail_data_key("Genre")
         return self.data["Genre"].split(", ")
 
@@ -86,7 +86,7 @@ class OmdbClient:
 
         while True:
             logger.info("Fetching page %d", page)
-            
+
             resp = self.make_request(
                 {
                     "s": search,
