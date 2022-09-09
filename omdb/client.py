@@ -85,7 +85,8 @@ class OmdbClient:
         total_results = None
 
         while True:
-
+            logger.info("Fetching page %d", page)
+            
             resp = self.make_request(
                 {
                     "s": search,

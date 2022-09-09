@@ -152,3 +152,8 @@ LOGGING = {
 
 BASE_DIR = "http://127.0.0.1:8000/"
 
+
+# Omdb API
+from configurations import values
+OMDB_KEY = values.SecrectValue()
+# OMDB_KEY = "c3169593"
