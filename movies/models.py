@@ -3,11 +3,37 @@ from django.db import models
 # Create your models here.
 
 class SearchTerm(models.Model):
-    pass
+    class Meta:
+        ordering = ["id"]
+    
+    term = models.TextField(unique=True)
+    last_search = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.term
+
 
 class Genre(models.Model):
-    pass
+    class Meta:
+        ordering = ["name"]
+
+    name = models.TextField(unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Movie(models.Model):
-    pass
+    class Meta:
+        ordering = ["title", "year"]
 
+    title = models.TextField()
+    year = models.PositiveIntegerField()
+    runtime_minutes = models.PositiveIntegerField(null = True)
+    imdb_id = models.SlugField(unique=True)
+    genres = models.ManyToManyField(Genre, related_name="movies")
+    plot = models.TextField(null=True, blank=True)
+    is_full_record = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title} ({self.year})"
