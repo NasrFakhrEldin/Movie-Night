@@ -42,4 +42,7 @@ urlpatterns = [
 
     # Index
     path("", movies.views.index),
+    path("search/", movies.views.movie_search, name="movie_search_ui"),
+    path("movies/<slug:imdb_id>/", movies.views.movie_detail, name="movie_detail_ui"),
+    path("movie-nights/", movies.views.movie_night_detail, name="movie_night_detail_ui"),
 ]

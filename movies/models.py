@@ -1,6 +1,8 @@
 from django.db import models
-
+from django.contrib.auth import get_user_model
 # Create your models here.
+
+UserModel = get_user_model()
 
 class SearchTerm(models.Model):
     class Meta:
@@ -37,3 +39,15 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.year})"
+
+
+class MovieNight(models.Model):
+    class Meta:
+        ordering = ["creator", "start_time"]
+
+    movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
+    start_time = models.DateTimeField()
+    creator = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.movie} by {self.creator.email}"

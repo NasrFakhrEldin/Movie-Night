@@ -15,7 +15,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if page_group == "search" %} active{% endif %}"
-                       href="#">Search</a>
+                       href="{% url 'movie_search_ui' %}">Search</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if page_group == "profile" %} active{% endif %}" href="{% url 'profile' %}">Profile</a>
