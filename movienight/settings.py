@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-AUTH_USER_MODEL = "movienight_auth.User"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -158,8 +157,10 @@ LOGGING = {
     },
 }
 
-BASE_DIR = "http://127.0.0.1:8000/"
+# BASE_DIR = "http://127.0.0.1:8000"
 
+# AUTH_APP
+AUTH_USER_MODEL = "movienight_auth.User"
 
 # Omdb API
 # from configurations import values

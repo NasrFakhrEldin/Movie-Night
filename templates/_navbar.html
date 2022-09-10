@@ -18,14 +18,15 @@
                        href="#">Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{% if page_group == "profile" %} active{% endif %}" href="#">Profile</a>
+                    <a class="nav-link{% if page_group == "profile" %} active{% endif %}" href="{% url 'profile' %}">Profile</a>
                 </li>
             </ul>
             <ul class="navbar-nav flex-end">
                 {% if request.user.is_anonymous %}
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="{% url 'login' %}">Log In</a>
+                           href="{% url 'login' %}">Log In
+                        </a>
                     </li>
                      <li class="nav-item">
                         {% comment %}
