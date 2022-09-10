@@ -42,8 +42,12 @@ INSTALLED_APPS = [
     # AUTH_APP
     'movienight_auth',
 
-    #App
+    #Apps
     'movies',
+
+    # crispy_forms
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +165,11 @@ BASE_DIR = "http://127.0.0.1:8000/"
 # from configurations import values
 # OMDB_KEY = values.SecretValue()
 OMDB_KEY = "c3169593"
+
+# CRISPY
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Two-Step Activation
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_ACTIVATION_DAYS = 3
