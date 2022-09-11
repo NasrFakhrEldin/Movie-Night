@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
+from datetime import timedelta
 # Create your models here.
 
 UserModel = get_user_model()
@@ -49,5 +51,26 @@ class MovieNight(models.Model):
     start_time = models.DateTimeField()
     creator = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 
+    @property
+    def end_time(self):
+        if not self.movie.runtime_minutes:
+            return None
+        return self.start_time + timedelta(minutes=self.movie.runtime_minutes)
+
     def __str__(self):
         return f"{self.movie} by {self.creator.email}"
+
+class MovieNightInvitaion(models.Model):
+    class Meta:
+        unique_together =[("invitee", "movie_night")]
+    
+    
+    movie_night = models.ForeignKey(
+        MovieNight, on_delete=models.CASCADE, related_name="invites"
+    )
+    invitee = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    attendance_confirmed = models.BooleanField(default=False)
+    is_attending = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.movie_night} / {self.invitee.email}"

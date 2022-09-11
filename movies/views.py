@@ -59,6 +59,6 @@ def movie_detail(request, imdb_id):
         "movie_night_form": movie_night_form,
     })
 
-
-def movie_night_detail(request):
+@login_required
+def movie_night_detail(request, pk ):
     return HttpResponse("Test")
