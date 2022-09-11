@@ -15,6 +15,20 @@
             {% endfor %}
             </p>
             <p>{{ movie.plot }}</p>
+            <h3>Create Movie Night</h3>
+            <p>
+                {% crispy movie_night_form %}
+            </p>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr('#id_start_time', {
+          enableTime: true
+        })
+      </script>
 {% endblock %}

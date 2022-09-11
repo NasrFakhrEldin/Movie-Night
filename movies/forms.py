@@ -4,6 +4,7 @@ from movies.models import MovieNight, MovieNightInvitaion
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django.core.exceptions import ValidationError
 
 
 UserModel = get_user_model()
@@ -17,7 +18,7 @@ class MovieNightForm(forms.ModelForm):
         fields = ["start_time"]
 
     def __init__(self, *args, **kwargs):
-        return super(MovieNightForm, self).__init__(*args, **kwargs)
+        super(MovieNightForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit("submit", "Create"))
 
@@ -27,7 +28,7 @@ class InviteeForm(forms.Form):
     _user = False
 
     def __init__(self, *args, **kwargs):
-        return super(InviteeForm, self).__init__(*args, **kwargs)
+        super(InviteeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit("submit", "Invite"))
 

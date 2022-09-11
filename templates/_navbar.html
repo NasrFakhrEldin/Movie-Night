@@ -11,7 +11,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link{% if page_group == "movie-nights" %} active{% endif %}"
-                       href="#">Movie Nights</a>
+                       href="{% url 'movie_night_list_ui' %}">Movie Nights</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if page_group == "search" %} active{% endif %}"

@@ -10,7 +10,8 @@
                 </p>
                 {% else %}
                 <p>
-                    Check out your list of <a href="#">Movie Night</a>.
+                    Check out your list of <a href="{% url 'movie_night_list_ui' %}">Movie Night</a>,
+                    or perform a <a href="{% url 'movie_search_ui' %}">Movie Search</a> to create own.
 
                 </p>
                 {% endif %}
