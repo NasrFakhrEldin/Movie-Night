@@ -160,8 +160,6 @@ class Dev(Configuration):
         },
     }
 
-    # BASE_DIR = "http://127.0.0.1:8000"
-
     # AUTH_APP
     AUTH_USER_MODEL = "movienight_auth.User"
 
@@ -181,3 +179,5 @@ class Dev(Configuration):
     # Celery
     CELERY_RESULT_BACKEND = "django-db"
     CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+    BASE_URL = "http://127.0.0.1:8000"

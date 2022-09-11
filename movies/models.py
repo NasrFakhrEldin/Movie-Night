@@ -50,6 +50,7 @@ class MovieNight(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
     start_time = models.DateTimeField()
     creator = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    start_notification_sent = models.BooleanField(default=False)
 
     @property
     def end_time(self):
