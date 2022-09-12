@@ -41,6 +41,8 @@ class Dev(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
 
+        'django_registration',
+
         # AUTH_APP
         'movienight_auth',
 
@@ -50,6 +52,9 @@ class Dev(Configuration):
         # crispy_forms
         'crispy_forms',
         'crispy_bootstrap5',
+
+        # Celery
+        'django_celery_results',
     ]
 
     MIDDLEWARE = [
