@@ -10,7 +10,7 @@
             <h2>Movie Night for {{ movie_night.movie.title }} ({{  movie_night.movie.year }})</h2>
             <p class="mb-3">
                 Scheduler for: {{ movie_night.start_time }}
-                {% if movie_night.end_time %})(until {{ movie_night.end_time }}){% endif %}
+                {% if movie_night.end_time %}(until {{ movie_night.end_time }}){% endif %}
             </p>
             <p class="mb-3">
                 {{ movie_night.movie.plot }}

@@ -26,9 +26,9 @@ class Dev(Configuration):
     SECRET_KEY = 'django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = True
+    DEBUG = False
 
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
 
     # Application definition
@@ -182,6 +182,7 @@ class Dev(Configuration):
     ACCOUNT_ACTIVATION_DAYS = 3
 
     # Celery
+    # celery -A movienight worker -l info -P gevent
     CELERY_RESULT_BACKEND = "django-db"
     CELERY_BROKER_URL = "redis://localhost:6379/0"
 

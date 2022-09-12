@@ -2,10 +2,11 @@ from celery import shared_task
 from movies import notifications
 from movies.models import MovieNightInvitaion
 
+
 @shared_task
 def send_invitaion(mni_pk):
     notifications.send_invitation(
-        MovieNightInvitaion.objects.filter(pk=mni_pk)
+        MovieNightInvitaion.objects.get(pk=mni_pk)
     )
 
 

@@ -8,11 +8,14 @@ from django.utils import timezone
 from movies.models import MovieNight
 
 
+
+
 def send_invitation(movie_night_invitation):
     subject = render_to_string(
-        "movies/notifications/invitation_subject.txt", {
+        "movies/notifications/invitation_subject.txt",
+        {
             "movie_night": movie_night_invitation.movie_night,
-        }
+        },
     )
 
     movie_night_path = reverse(
@@ -26,8 +29,10 @@ def send_invitation(movie_night_invitation):
             "creator": movie_night_invitation.movie_night.creator,
             "movie_night": movie_night_invitation.movie_night,
             "movie_night_url": urljoin(settings.BASE_URL, movie_night_path),
-        }
+        },
     )
+
+    
 
     # subject, message, from_email, recipient_list
     send_mail(
@@ -40,10 +45,11 @@ def send_invitation(movie_night_invitation):
 
 def send_attendance_change(movie_night_invitation, is_attending):
     subject = render_to_string(
-        "movies/notifications/attendance_update_subject.txt", {
+        "movies/notifications/attendance_update_subject.txt",
+        {
             "movie_night": movie_night_invitation.movie_night,
             "movie_night_invitation": movie_night_invitation,
-        }
+        },
     )
 
     movie_night_path = reverse(
@@ -59,7 +65,7 @@ def send_attendance_change(movie_night_invitation, is_attending):
             "creator": movie_night_invitation.movie_night.creator,
             "movie_night": movie_night_invitation.movie_night,
             "movie_night_url": urljoin(settings.BASE_URL, movie_night_path),
-        }
+        },
     )
 
     send_mail(
@@ -72,9 +78,10 @@ def send_attendance_change(movie_night_invitation, is_attending):
 
 def send_starting_notification(movie_night):
     subject = render_to_string(
-        "movies/notifications/starting_subject.txt", {
+        "movies/notifications/starting_subject.txt",
+        {
             "movie_night": movie_night,
-        }
+        },
     )
 
     movie_night_path = reverse(
@@ -87,7 +94,7 @@ def send_starting_notification(movie_night):
         {
             "movie_night": movie_night,
             "movie_night_url": urljoin(settings.BASE_URL, movie_night_path),
-        }
+        },
     )
 
     to_emails = [invite.invitee.email for invite in movie_night.invites.filter(is_attending=True)]
