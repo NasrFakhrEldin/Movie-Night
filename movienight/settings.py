@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from configurations import Configuration
+from configurations import values
 
 class Dev(Configuration):
 
@@ -23,7 +24,7 @@ class Dev(Configuration):
     # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = 'django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
+    SECRET_KEY = values.SecretValue()
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
@@ -43,15 +44,15 @@ class Dev(Configuration):
 
         'django_registration',
 
-        # AUTH_APP
-        'movienight_auth',
-
-        #Apps
-        'movies',
-
         # crispy_forms
         'crispy_forms',
         'crispy_bootstrap5',
+
+        # AUTH_APP
+        'movienight_auth',
+
+        # Apps
+        'movies',
 
         # Celery
         'django_celery_results',
@@ -169,16 +170,25 @@ class Dev(Configuration):
     AUTH_USER_MODEL = "movienight_auth.User"
 
     # Omdb API
-    # from configurations import values
-    # OMDB_KEY = values.SecretValue()
-    OMDB_KEY = "c3169593"
+    OMDB_KEY = values.SecretValue()
 
     # CRISPY
     CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
     CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+    # Email
+    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+    # Gmail SMTP Server - # https://mailtrap.io/blog/django-send-email/
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = '587'
+    EMAIL_HOST_USER = values.SecretValue()
+    EMAIL_HOST_PASSWORD = values.SecretValue()
+    EMAIL_USE_TLS = True
+    # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
     # Two-Step Activation
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     ACCOUNT_ACTIVATION_DAYS = 3
 
     # Celery

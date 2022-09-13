@@ -40,6 +40,7 @@ def send_invitation(movie_night_invitation):
         body,
         None,
         [movie_night_invitation.invitee.email],
+        fail_silently = False
     )
 
 
@@ -73,6 +74,7 @@ def send_attendance_change(movie_night_invitation, is_attending):
         body,
         None,
         [movie_night_invitation.movie_night.creator.email],
+        fail_silently = False
     )
 
 
@@ -105,6 +107,7 @@ def send_starting_notification(movie_night):
         body,
         None,
         to_emails,
+        fail_silently = False
     )
 
     movie_night.start_notification_sent = True
