@@ -56,6 +56,7 @@ class Dev(Configuration):
 
         # Celery
         'django_celery_results',
+        'django_celery_beat',
     ]
 
     MIDDLEWARE = [
@@ -195,5 +196,7 @@ class Dev(Configuration):
     # celery -A movienight worker -l info -P gevent
     CELERY_RESULT_BACKEND = "django-db"
     CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+    CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
     BASE_URL = "http://127.0.0.1:8000"

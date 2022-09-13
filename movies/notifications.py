@@ -119,7 +119,7 @@ def notify_of_starting_soon():
     start_berfore = timezone.now() + timedelta(minutes=30)
 
     movie_nights = MovieNight.objects.filter(
-        start_time__le = start_berfore,
+        start_time__lte = start_berfore,
         start_notification_sent=False
     )
 
