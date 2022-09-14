@@ -48,6 +48,10 @@ class Dev(Configuration):
         'crispy_forms',
         'crispy_bootstrap5',
 
+        # DRF
+        'rest_framework',
+        'rest_framework.authtoken',
+
         # AUTH_APP
         'movienight_auth',
 
@@ -143,7 +147,7 @@ class Dev(Configuration):
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-    # Logging
+    # Logging Configurations
 
     LOGGING = {
         "version": 1,
@@ -166,6 +170,21 @@ class Dev(Configuration):
             "level": "DEBUG",
         },
     }
+
+
+    # DRF Configurations
+    REST_FRAMEWORK = {
+        "DEFAULT_AUTHENTICATION_CLASSES": [
+            "rest_framework.authentication.BasicAuthentication",
+            "rest_framework.authentication.SessionAuthentication",
+            "rest_framework.authentication.TokenAuthentication",
+        ]
+    }
+
+
+
+
+    #==== Variables Configurations ===#
 
     # AUTH_APP
     AUTH_USER_MODEL = "movienight_auth.User"

@@ -49,4 +49,7 @@ urlpatterns = [
     path("movie-nights/<int:pk>", movies.views.movie_night_detail, name="movie_night_detail_ui"),
 
     path("movie-nights/", movies.views.movie_night_list, name="movie_night_list_ui"),
+
+    # API
+    path("api/v1/", include("movies.api.urls")),
 ]
