@@ -42,6 +42,11 @@ class Movie(models.Model):
     def __str__(self):
         return f"{self.title} ({self.year})"
 
+    # required for DRF to render the `url` field in the title and url movie serializer
+    @property
+    def url(self):
+        return self.pk
+
 
 class MovieNight(models.Model):
     class Meta:

@@ -6,9 +6,14 @@ from rest_framework.routers import DefaultRouter
 from movienight_auth.api.views import UserDetail
 # from rest_framework.authtoken import views
 
-from movies.api.views import GenreViewSet
+from movies.api.views import (
+    GenreViewSet, MovieViewSet,
+    MovieNightViewSet
+)
 
 router = DefaultRouter()
+router.register("movie-nights", MovieNightViewSet, basename="movienight")
+router.register("movies", MovieViewSet)
 router.register("genres", GenreViewSet)
 
 urlpatterns = [
