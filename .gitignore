@@ -1,5 +1,10 @@
 # ignore ALL .log files
 *.log
 
+# ignore ALL celery beat files
+*.bak
+*.dat
+*.dir
+
 # ignore ALL files in ANY directory named pass
 pass/
