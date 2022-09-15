@@ -8,10 +8,15 @@ from movienight_auth.api.views import UserDetail
 
 from movies.api.views import (
     GenreViewSet, MovieViewSet,
-    MovieNightViewSet
+    MovieNightViewSet, MovieNightInvitationViewset
 )
 
 router = DefaultRouter()
+router.register(
+    "movie-night-invitations",
+    MovieNightInvitationViewset,
+    basename="movienightinvitation",
+)
 router.register("movie-nights", MovieNightViewSet, basename="movienight")
 router.register("movies", MovieViewSet)
 router.register("genres", GenreViewSet)

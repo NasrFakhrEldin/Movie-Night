@@ -62,7 +62,7 @@ class MovieNight(models.Model):
         if not self.movie.runtime_minutes:
             return None
         return self.start_time + timedelta(minutes=self.movie.runtime_minutes)
-
+    
     def __str__(self):
         return f"{self.movie} by {self.creator.email}"
 
@@ -78,5 +78,6 @@ class MovieNightInvitaion(models.Model):
     attendance_confirmed = models.BooleanField(default=False)
     is_attending = models.BooleanField(default=False)
 
+    @property
     def __str__(self):
         return f"{self.movie_night} / {self.invitee.email}"
