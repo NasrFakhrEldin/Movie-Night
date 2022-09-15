@@ -2,9 +2,9 @@
 *.log
 
 # ignore ALL celery beat files
-*.bak
-*.dat
-*.dir
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
 
 # ignore ALL files in ANY directory named pass
 pass/

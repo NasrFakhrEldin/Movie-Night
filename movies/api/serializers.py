@@ -21,6 +21,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     genres = GenreField(slug_field="name", many=True, read_only=True)
+
     class Meta:
         model = Movie
         fields = "__all__"
@@ -61,6 +62,37 @@ class MovieNightInvitationSerilazier(serializers.ModelSerializer):
 
 
 
+class MovieNightInvitationCreationSerilazier(serializers.ModelSerializer):
+    invitee = serializers.HyperlinkedRelatedField(
+        view_name="api_user_detail", queryset = User.objects.all(),
+        lookup_field = "email"
+    )
+
+    class Meta:
+        model = MovieNightInvitaion
+        fields = ["invitee"]
+
+    def __init__(self, movie_night, *args, **kwargs):
+        self.movie_night = movie_night
+        super(MovieNightInvitationCreationSerilazier, self).__init__(*args, **kwargs)
+
+    def save(self, **kwargs):
+        kwargs["movie_night"] = self.movie_night
+        super(MovieNightInvitationCreationSerilazier, self).save(**kwargs)
+
+    def validate_invitee(self, invitee):
+        existing_invitaion = MovieNightInvitaion.objects.filter(
+            invitee = self.invitee,
+            movie_night = self.movie_night,
+        ).first()
+
+        if existing_invitaion:
+            raise serializers.ValidationError(
+                f"{invitee.email} has already been invited to this Movie Night"
+            )
+        return invitee
+
+
 class MovieNightSerializer(serializers.ModelSerializer):
     movie = MovieTitleUrlSerializer(read_only=True)
     creator = serializers.HyperlinkedRelatedField(
@@ -74,6 +106,16 @@ class MovieNightSerializer(serializers.ModelSerializer):
         model = MovieNight
         fields = "__all__"
         read_only_fields = ["movie", "creator", "start_notification_sent", "invites"]
+
+
+class MovieNightCreationSerializer(MovieNightSerializer):
+    movie = serializers.HyperlinkedRelatedField(
+        view_name="movie_night_detail_ui",
+        queryset=Movie.objects.all(),
+    )
+
+    class Meta(MovieNightSerializer.Meta):
+        read_only_fields = ["start_notification_sent", "invites"]
 
 
 class MovieSearchSerilazier(serializers.Serializer):
