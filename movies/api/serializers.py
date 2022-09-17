@@ -82,7 +82,7 @@ class MovieNightInvitationCreationSerilazier(serializers.ModelSerializer):
 
     def validate_invitee(self, invitee):
         existing_invitaion = MovieNightInvitaion.objects.filter(
-            invitee = self.invitee,
+            invitee = invitee,
             movie_night = self.movie_night,
         ).first()
 

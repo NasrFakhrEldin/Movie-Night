@@ -129,7 +129,7 @@ class MovieNightViewSet(viewsets.ModelViewSet):
 
         serializer = MovieNightCreationSerializer(
             movie_night,
-            data=request.user,
+            data=request.data,
             context={"request":request}
         )
 
