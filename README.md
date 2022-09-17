@@ -1,5 +1,5 @@
 # Movie-Night
-Project called Movie Night which aims to make it easier to organize times to watch movies with friends.
+Movie Night Project aims to make it easier to organize times to watch movies with friends.
 
 # High-level description of the site’s features:
 
