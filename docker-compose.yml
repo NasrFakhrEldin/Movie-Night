@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  web:
+    restart: always
+    container_name: movie_night
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
+      - DJANGO_OMDB_KEY='3430a519'
+      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
+      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
+    depends_on:
+      - redis
+      - db
+
+  db:
+    container_name: pg_movie_night
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypass
+
+  redis:
+    container_name: redis_movie_night
+    restart: always
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    container_name: celery_movie_night
+    restart: always
+    build:
+      context: .
+    command: celery -A movienight worker -l info
+    environment:
+      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
+      - DJANGO_OMDB_KEY='3430a519'
+      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
+      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
+      - DEBUG=1
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379:0
+    depends_on:
+      - redis
+    volumes:
+      - .:/usr/src/app
+
+  celery-beat:
+    container_name: celery_beat_movie_night
+    restart: always
+    build:
+      context: .
+    command: celery -A movienight beat -l INFO
+    environment:
+      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
+      - DJANGO_OMDB_KEY='3430a519'
+      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
+      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
+    depends_on:
+      - redis
+      - celery
+    volumes:
+      - .:/usr/src/app

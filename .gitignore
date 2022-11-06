@@ -8,3 +8,4 @@
 
 # ignore ALL files in ANY directory named pass
 pass/
+/venv

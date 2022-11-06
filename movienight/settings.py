@@ -14,12 +14,14 @@ from pathlib import Path
 from configurations import Configuration
 from configurations import values
 from datetime import timedelta
+import dj_database_url
+import smtplib
+
 
 class Dev(Configuration):
 
     # Build paths inside the project like this: BASE_DIR / 'subdir'.
     BASE_DIR = Path(__file__).resolve().parent.parent
-
 
     # Quick-start development settings - unsuitable for production
     # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -30,123 +32,139 @@ class Dev(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
-    ALLOWED_HOSTS = ['*']
+    """
+    ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io", os.environ.get('CODIO_HOSTNAME') + '-8000.codio.io'])
+    X_FRAME_OPTIONS = "ALLOW-FROM " + os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"
+    CSRF_COOKIE_SAMESITE = None
+    CSRF_TRUSTED_ORIGINS = [os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"]
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SAMESITE = "None"
+    
+    # Ignore SSL certificate errors
+    import ssl
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    """
 
+    ALLOWED_HOSTS = []
 
     # Application definition
 
     INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-
-        'django_registration',
-
+        "django.contrib.admin",
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.messages",
+        "django.contrib.staticfiles",
+        "django_registration",
         # crispy_forms
-        'crispy_forms',
-        'crispy_bootstrap5',
-
+        "crispy_forms",
+        "crispy_bootstrap5",
         # DRF
-        'rest_framework',
-        'rest_framework.authtoken',
-
+        "rest_framework",
+        "rest_framework.authtoken",
         # AUTH_APP
-        'movienight_auth',
-
+        "movienight_auth",
         # Apps
-        'movies',
-
+        "movies",
         # Celery
-        'django_celery_results',
-        'django_celery_beat',
+        # "django_celery_results",
+        "django_celery_beat",
     ]
 
     MIDDLEWARE = [
-        'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        "django.middleware.security.SecurityMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ]
 
-    ROOT_URLCONF = 'movienight.urls'
+    ROOT_URLCONF = "movienight.urls"
 
     TEMPLATES = [
         {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [BASE_DIR / "templates"],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.contrib.auth.context_processors.auth',
-                    'django.contrib.messages.context_processors.messages',
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": [BASE_DIR / "templates"],
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.debug",
+                    "django.template.context_processors.request",
+                    "django.contrib.auth.context_processors.auth",
+                    "django.contrib.messages.context_processors.messages",
                 ],
             },
         },
     ]
 
-    WSGI_APPLICATION = 'movienight.wsgi.application'
-
+    WSGI_APPLICATION = "movienight.wsgi.application"
 
     # Database
     # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': BASE_DIR / 'db.sqlite3',
+    #     }
+    # }
 
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=f"postgres://postgres:mypass@db:5432/postgres"
+        ),
+    }
+    # DATABASES = {
+    #     "default": dj_database_url.config(
+    #         default=f"postgres://movienightadmin:mypass@127.0.0.1:5432/db_movie_night"
+    #     ),
+    # }
 
     # Password validation
     # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
     AUTH_PASSWORD_VALIDATORS = [
         {
-            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+            "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
         },
         {
-            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+            "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         },
         {
-            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+            "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
         },
         {
-            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+            "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
         },
     ]
-
 
     # Internationalization
     # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-    LANGUAGE_CODE = 'en-us'
+    LANGUAGE_CODE = "en-us"
 
-    TIME_ZONE = 'Africa/Cairo'
+    TIME_ZONE = "Africa/Cairo"
 
     USE_I18N = True
 
     USE_TZ = True
 
-
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-    STATIC_URL = '/static/'
+    STATIC_URL = "/static/"
 
     # Default primary key field type
     # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-    DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+    DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
     # Logging Configurations
 
@@ -172,7 +190,6 @@ class Dev(Configuration):
         },
     }
 
-
     # DRF Configurations
     REST_FRAMEWORK = {
         "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -189,10 +206,7 @@ class Dev(Configuration):
         "PAGE_SIZE": 20,
     }
 
-
-
-
-    #==== Variables Configurations ===#
+    # ==== Variables Configurations ===#
 
     # AUTH_APP
     AUTH_USER_MODEL = "movienight_auth.User"
@@ -205,15 +219,20 @@ class Dev(Configuration):
     CRISPY_TEMPLATE_PACK = "bootstrap5"
 
     # Email
+
+    # server = smtplib.SMTP('smtp.gmail.com:587')
+    # server.ehlo()
+    # server.starttls()
     # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
     # Gmail SMTP Server - # https://mailtrap.io/blog/django-send-email/
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = '587'
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_PORT = "587"
     EMAIL_HOST_USER = values.SecretValue()
     EMAIL_HOST_PASSWORD = values.SecretValue()
     EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
     # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
     # Two-Step Activation
@@ -221,10 +240,15 @@ class Dev(Configuration):
 
     # Celery
     # celery -A movienight worker -l info -P gevent
-    CELERY_RESULT_BACKEND = "django-db"
-    CELERY_BROKER_URL = "redis://localhost:6379/0"
-
-    CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+    CELERY_RESULT_BACKEND = "redis://redis:6379"
+    CELERY_BROKER_URL = "redis://redis:6379"
+    # CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+    CELERY_BEAT_SCHEDULE = {
+        "sample_task": {
+            "task": "movies.tasks.notify_of_starting_soon",
+            "schedule": timedelta(seconds=60),
+        },
+    }
 
     BASE_URL = "http://127.0.0.1:8000"
 

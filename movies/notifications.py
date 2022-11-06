@@ -125,3 +125,40 @@ def notify_of_starting_soon():
 
     for movie_night in movie_nights:
         send_starting_notification(movie_night)
+        
+        
+'''
+def email(request):
+    mail_subject = 'Activate your account'
+    message = 'test'
+    to_email = 'example@example.com'
+    email = EmailMessage(
+        mail_subject, message, to=[to_email]
+    )
+    email.send()
+    return redirect('index')
+
+
+
+
+import smtplib
+import ssl
+
+def email(request):
+    port = settings.EMAIL_PORT
+    smtp_server = settings.EMAIL_HOST
+    sender_email = settings.EMAIL_HOST_USER
+    password = settings.EMAIL_HOST_PASSWORD
+    receiver_email = 'example@example.com'
+    subject = 'Website registration'
+    body = 'Activate your account.'
+    message = 'Subject: {}\n\n{}'.format(subject, body)
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()  # Can be omitted
+        server.starttls(context=context)
+        server.ehlo()  # Can be omitted
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message)
+    return redirect('index')
+'''
