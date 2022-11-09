@@ -11,11 +11,6 @@ services:
       - .:/usr/src/app
     ports:
       - "8000:8000"
-    environment:
-      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
-      - DJANGO_OMDB_KEY='3430a519'
-      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
-      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
     depends_on:
       - redis
       - db
@@ -45,10 +40,6 @@ services:
       context: .
     command: celery -A movienight worker -l info
     environment:
-      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
-      - DJANGO_OMDB_KEY='3430a519'
-      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
-      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
       - DEBUG=1
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379:0
@@ -63,13 +54,18 @@ services:
     build:
       context: .
     command: celery -A movienight beat -l INFO
-    environment:
-      - DJANGO_SECRET_KEY='django-insecure-32je!ye&zl5p-gr^bi$r+_np^b$ntc%66sr#b6@g&3(tgwd^0('
-      - DJANGO_OMDB_KEY='3430a519'
-      - DJANGO_EMAIL_HOST_USER='movienight.team.ad@gmail.com'
-      - DJANGO_EMAIL_HOST_PASSWORD='nrmferwzjxujzaul'
+
     depends_on:
       - redis
       - celery
     volumes:
       - .:/usr/src/app
+
+  flower:
+    container_name: flower_ecommerce
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - FLOWER_PORT=8888
+    ports:
+      - "8888:8888"

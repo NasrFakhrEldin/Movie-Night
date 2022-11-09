@@ -15,7 +15,6 @@ from configurations import Configuration
 from configurations import values
 from datetime import timedelta
 import dj_database_url
-import smtplib
 
 
 class Dev(Configuration):
@@ -33,15 +32,6 @@ class Dev(Configuration):
     DEBUG = True
 
     """
-    ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io", os.environ.get('CODIO_HOSTNAME') + '-8000.codio.io'])
-    X_FRAME_OPTIONS = "ALLOW-FROM " + os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"
-    CSRF_COOKIE_SAMESITE = None
-    CSRF_TRUSTED_ORIGINS = [os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"]
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SAMESITE = "None"
-    SESSION_COOKIE_SAMESITE = "None"
-    
     # Ignore SSL certificate errors
     import ssl
     ctx = ssl.create_default_context()
@@ -109,13 +99,6 @@ class Dev(Configuration):
     # Database
     # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': BASE_DIR / 'db.sqlite3',
-    #     }
-    # }
-
     DATABASES = {
         "default": dj_database_url.config(
             default=f"postgres://postgres:mypass@db:5432/postgres"
@@ -123,9 +106,10 @@ class Dev(Configuration):
     }
     # DATABASES = {
     #     "default": dj_database_url.config(
-    #         default=f"postgres://movienightadmin:mypass@127.0.0.1:5432/db_movie_night"
+    #         default=f"postgres://postgres:mypass@127.0.0.1:5432/postgres"
     #     ),
     # }
+    # psycopg2
 
     # Password validation
     # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -220,17 +204,13 @@ class Dev(Configuration):
 
     # Email
 
-    # server = smtplib.SMTP('smtp.gmail.com:587')
-    # server.ehlo()
-    # server.starttls()
-    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
     # Gmail SMTP Server - # https://mailtrap.io/blog/django-send-email/
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = "smtp.gmail.com"
     EMAIL_PORT = "587"
     EMAIL_HOST_USER = values.SecretValue()
     EMAIL_HOST_PASSWORD = values.SecretValue()
+
     EMAIL_USE_TLS = True
     EMAIL_USE_SSL = False
     # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -242,6 +222,7 @@ class Dev(Configuration):
     # celery -A movienight worker -l info -P gevent
     CELERY_RESULT_BACKEND = "redis://redis:6379"
     CELERY_BROKER_URL = "redis://redis:6379"
+
     # CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
     CELERY_BEAT_SCHEDULE = {
         "sample_task": {
